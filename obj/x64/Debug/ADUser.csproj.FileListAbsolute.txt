@@ -1,0 +1,10 @@
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\ADUser.exe.config
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\ADUser.exe.manifest
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\ADUser.application
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\ADUser.exe
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\ADUser.pdb
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\bin\x64\Debug\MySql.Data.dll
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\obj\x64\Debug\ADUser.exe.manifest
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\obj\x64\Debug\ADUser.application
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\obj\x64\Debug\ADUser.exe
+C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\obj\x64\Debug\ADUser.pdb

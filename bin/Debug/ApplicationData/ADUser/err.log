@@ -1,0 +1,3 @@
+26.01.2016 12:07:42|Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+26.01.2016 12:07:42|   bei ADUser.Classes.GetADUser.DisplayADAUser() in C:\Users\adm.zehner\Documents\Visual Studio 2015\Projects\ADUser\ADUser\Classes\GetADUser.cs:Zeile 26.
+26.01.2016 12:07:42|
