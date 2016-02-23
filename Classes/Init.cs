@@ -44,6 +44,17 @@ namespace ADUser.Classes
                     logger._ilogger("Ordner unter %APPDATA% ist vorhanden");
                     variablen.can_start = true;
                     logger._ilogger("Neuer ADUser Start Status ist: " + variablen.can_start);
+                    Deployment.ChecIfMySqlConnector();
+
+                    if (variablen.found == false)
+                    {
+                        Connector();
+                    }
+                    else
+                    {
+                        logger._ilogger("MySQL Connector wurde installiert");
+                    }
+
                 }
                 else
                 {

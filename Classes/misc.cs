@@ -66,12 +66,6 @@ namespace ADUser.Classes
                 Console.WriteLine("Bitte Connectionstring ändern!");
                 return variablen.isValid;
             }
-            else if (connectionstring == "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;")
-            {
-                Console.WriteLine("Bitte den Connectionstring umändern!");
-                return variablen.isValid;
-
-            }
 
             variablen.isValid = true;
             return variablen.isValid;

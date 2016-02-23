@@ -17,8 +17,6 @@ namespace ADUser.Classes
 
             try
             {
-                if(valid)
-                {
                     Console.Clear();
                     MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
                     MySqlCommand cmd = con.CreateCommand();
@@ -31,16 +29,6 @@ namespace ADUser.Classes
 
                     Console.WriteLine("TRUNCATE Befehl wurde erfolgreich ausgeführt! Starten Sie das Programm neu und geben Sie add ein um die Datenbank wieder zu füllen!");
                     logger._ilogger("TRUNCATE Befehl wurde erfolgreich ausgeführt.");
-
-                }
-                else
-                {
-                    Console.WriteLine("Bitte den Connectionstring umändern!");
-                }
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -55,10 +43,7 @@ namespace ADUser.Classes
         public static void SELECT()
         {
 
-            bool valid = variablen.isValid;
-
-            if (valid)
-            {
+         
                 Console.Clear();
                 MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
                 MySqlCommand cmd = con.CreateCommand();
@@ -98,16 +83,6 @@ namespace ADUser.Classes
                     }
                     con.Close();
                 }
-
-            }
-            else
-            {
-                Console.WriteLine("Bitte den Connectionstring umändern!");
-            }
-
-
-
-
         }
 
         public static void CHECK()

@@ -32,6 +32,7 @@ namespace ADUser.Classes
         public static bool is_connector = false;
         public static bool can_start = true;
         public static DateTime nuller = new DateTime(1970, 1, 1);
+        public static bool found = false;
 
         public const string message = "Soll versucht werden den MySQL Connector neu zu installieren?";
         public const string caption = "MySQL Connector neu installieren?";

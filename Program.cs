@@ -18,6 +18,7 @@ namespace ADUser
                 Console.WriteLine("Hilfe? Einfach mal die Enter Taste drücken :)");
                 Classes.Init.init();
 
+
                 do
                 {
                     string befehl;
@@ -64,8 +65,14 @@ namespace ADUser
                             Console.WriteLine(Classes.variablen.connectionstring);
                             string location = System.Reflection.Assembly.GetExecutingAssembly().Location;
                             Console.WriteLine(location);
+                            Classes.misc.ShowDomain();
                             break;
-
+                        case "dc":
+                            Classes.misc.isValidDomain();
+                            break;
+                        case "Install":
+                            Classes.Init.Connector();
+                            break;
                         default:
                             Console.WriteLine("Benutzbare Befehle: ");
                             Console.WriteLine("add -- Füllt die Datenbank mit Daten");

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace ADUser.Classes
 {
@@ -23,25 +24,36 @@ namespace ADUser.Classes
             Danach soll und wird wieder überprüft ob der Connector
             richtig installiert wurde. 
 
+            REWRITE: 23.02.2016..
+
         */
         public static void ChecIfMySqlConnector()
         {
             try
             {
-               if (!Directory.Exists(@"C:\Program Files (x86)\MySQL"))
+                List<String> softwareList = new List<String>();
+                RegistryKey products = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Classes\Installer\Products");
+                foreach (String keyName in products.GetSubKeyNames())
+                    foreach (String valueName in products.OpenSubKey(keyName).GetValueNames())
+                        if (valueName == "ProductName")
+                        {
+                            String entry = products.OpenSubKey(keyName).GetValue("ProductName").ToString();
+                            if (entry != null)
+                                softwareList.Add(entry);
+                        }
+
+
+                
+                foreach (string sName in softwareList)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Es wurde kein MySQL Connector gefunden! Es wird nun versucht das Programm nach zu installieren.");
-                    logger._wlogger("Kein MySQL Connector gefunden... Aborting...");
-                    Environment.Exit(-1);
+                    if (sName.Contains("MySQL Connector Net"))
+                    {
+                        variablen.found = true;
+                        Console.WriteLine("MySQL Connector wurde gefunden!");
+                    }
+                  
                 }
-               else
-                {
-                    Console.WriteLine("MySQL Connector wurde gefunden");
-                    Classes.variablen.is_connector = true;
-                    logger._ilogger("MySQL Connector gefunden...");
-                    logger._ilogger(variablen.is_connector.ToString());
-                }
+
             }
             catch (Exception ex)
             {
