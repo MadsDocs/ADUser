@@ -52,6 +52,7 @@ namespace ADUser.Classes
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Temp");
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Updates");
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Updates\Changelogs");
+                    Directory.CreateDirectory(variablen.appdata + @"\UserData\Installation");
 
                     logger._ilogger("Directory wurde erfolgreich erstellt..");
                 }
@@ -62,6 +63,59 @@ namespace ADUser.Classes
             }
 
            
+        }
+
+        public static void Connector()
+        {
+            try
+            {
+                if (File.Exists(variablen.appdata + @"\UserData\Installation\mysql-connector.msi"))
+                {
+                    if (Directory.Exists("C:\\Programm Files (x86)\\MySQL"))
+                    {
+                        Console.WriteLine("MySQL Connector existiert!");
+                    }
+                    else
+                    {
+                        Process proc = new Process();
+                        proc.StartInfo.WorkingDirectory = variablen.appdata + @"\UserData\Installation";
+                        proc.StartInfo.FileName = "msiexec";
+                        proc.StartInfo.Arguments = string.Format(@"/package  " + variablen.appdata + @"\UserData\Installation\mysql-connector.msi");
+                        proc.StartInfo.UseShellExecute = false;
+                        proc.StartInfo.CreateNoWindow = false;
+                        proc.Start();
+                        proc.WaitForExit();
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("MySQL Connector wurde installiert!");
+                        variablen.is_connector = true;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+                    }
+                }
+                else
+                {
+                    WebClient client = new WebClient();
+                    client.DownloadFile("http://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-6.9.8.msi", variablen.appdata + @"\UserData\Installation\mysql-connector.msi");
+
+                    Process proc = new Process();
+                    proc.StartInfo.WorkingDirectory = variablen.appdata + @"\UserData\Installation";
+                    proc.StartInfo.FileName = "msiexec";
+                    proc.StartInfo.Arguments = string.Format(@"/package  " + variablen.appdata + @"\UserData\Installation\mysql-connector.msi");
+                    proc.StartInfo.UseShellExecute = false;
+                    proc.StartInfo.CreateNoWindow = false;
+                    proc.Start();
+                    proc.WaitForExit();
+                }
+
+              
+
+
+            }
+            catch (Exception ex)
+            {
+                logger._elogger(ex);
+            }
         }
     }
 }
