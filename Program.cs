@@ -74,17 +74,7 @@ namespace ADUser
                             Classes.Init.Connector();
                             break;
                         default:
-                            Console.WriteLine("Benutzbare Befehle: ");
-                            Console.WriteLine("add -- Füllt die Datenbank mit Daten");
-                            Console.WriteLine("truncate -- Löscht die Daten aus der Tabelle tracking");
-                            Console.WriteLine("select -- Zeigt den Inhalt der Tablle tracking");
-                            Console.WriteLine("env -- Zeigt das Aktuelle Working Directory des Programms an!");
-                            Console.WriteLine("ver -- Zeigt die Aktuelle Programmversion an");
-                            Console.WriteLine("stat -- Zeit den Aktuellen Programm Status an");
-                            Console.WriteLine("check -- Checkt die Tabelle tracking");
-                            Console.WriteLine("cls -- Löscht den Konsolen Inhalt");
-                            Console.WriteLine("exit -- Beendet das Programm");
-
+                            Classes.misc.ShowHelp();
                             break;
                     }
 

@@ -12,19 +12,7 @@ namespace ADUser.Classes
     class Deployment
     {
         /*
-            Diese Methode überprüft ob der MySQL Connector installiert ist. Sollte dieser
-            nicht installiert sein, wird er nach installiert...
-
-            Dies ist erforderlich da sonst das Programm abstürzt wenn die Befehle
-            Truncate, Add und Select ausgeführt werden
-            
-            Sollte der Connector nicht vorhanden sein, wird dieser
-            von einer Freigabe runter geladen und installiert.
-
-            Danach soll und wird wieder überprüft ob der Connector
-            richtig installiert wurde. 
-
-            REWRITE: 23.02.2016..
+          REWRITE: 23.02.2016..
 
         */
         public static void ChecIfMySqlConnector()

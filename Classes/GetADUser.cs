@@ -66,25 +66,49 @@ namespace ADUser.Classes
                 }
                 else
                 {
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, variablen.domain);
-                    PrincipalSearcher us = new PrincipalSearcher(new UserPrincipal(pc));
-                    PrincipalSearchResult<Principal> psr = us.FindAll();
 
-                    Console.WriteLine("User werden nun angezeigt!");
-                    foreach (UserPrincipal up2 in psr)
+
+                    switch (Environment.UserDomainName)
                     {
-                        eintraege++;
-                        DateTime lastlog = up2.LastLogon.GetValueOrDefault(variablen.nuller);
-                        string ausgabe = String.Format("\r\nsAMAccount: {0}, \r\n LastLog: {1}", up2.SamAccountName, lastlog);
-                        Console.WriteLine(ausgabe);
+                        case "WORKGROUP":
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Kann keine Benutzerinformationen holen solange der PC nicht in einer Domäne ist!");
+                            Console.ForegroundColor = ConsoleColor.Gray;
 
+                            logger._ilogger("PC ist nicht in einer Domäne, von daher ist es nicht möglich User aus der Domäne auszulesen");
+
+
+                            break;
+                        default:
+
+                            PrincipalContext pc = new PrincipalContext(ContextType.Domain, variablen.domain);
+                            PrincipalSearcher us = new PrincipalSearcher(new UserPrincipal(pc));
+                            PrincipalSearchResult<Principal> psr = us.FindAll();
+
+                            Console.WriteLine("User werden nun angezeigt!");
+                            foreach (UserPrincipal up2 in psr)
+                            {
+                                eintraege++;
+                                DateTime lastlog = up2.LastLogon.GetValueOrDefault(variablen.nuller);
+                                string ausgabe = String.Format("\r\nsAMAccount: {0}, \r\n LastLog: {1}", up2.SamAccountName, lastlog);
+                                Console.WriteLine(ausgabe);
+
+                            }
+                            Console.WriteLine("Auslesen fertig! Angezeigte User: " + eintraege);
+
+                            break;
                     }
-                    Console.WriteLine("Auslesen fertig! Angezeigte User: " + eintraege);
+
+
+                
                 }
 
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Fehler bei Domänenausgabe... ");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 logger._elogger(ex);
             }
         }
