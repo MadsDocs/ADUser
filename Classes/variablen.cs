@@ -40,6 +40,7 @@ namespace ADUser.Classes
         public const string error_caption = "Automatische Installation abgebrochen";
 
         public static string domain = Classes.misc.getDomainSetting("domain");
+        public static string dll = "";
 
         public static bool isValid = false;
         

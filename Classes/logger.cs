@@ -76,5 +76,28 @@ namespace ADUser.Classes
             _swriter.Close();
             _swriter.Flush();
         }
+
+        public static void readLog()
+        {
+            if ( !Directory.Exists (variablen.appdata + @"\UserData\Logs\"))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Log Ordner nicht gefunden!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else
+            {
+                StreamReader _rreader = new StreamReader(variablen.appdata + @"\UserData\Logs\status.log");
+                string line = "";
+
+                while ((line = _rreader.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+
+                Console.ReadLine();
+
+            }
+        }
     }
 }

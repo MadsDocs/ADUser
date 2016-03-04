@@ -46,6 +46,8 @@ namespace ADUser.Classes
                     logger._ilogger("Neuer ADUser Start Status ist: " + variablen.can_start);
                     Deployment.ChecIfMySqlConnector();
 
+                    SearchforDLL();
+
                     if (variablen.found == false)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -56,7 +58,7 @@ namespace ADUser.Classes
                     {
 
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("MySQL Connector gefunden");
+                        Console.WriteLine("MySQL Connector / DLL Check = Gefunden" );
                         Console.ForegroundColor = ConsoleColor.Gray;
 
                         logger._ilogger("MySQL Connector wurde installiert");
@@ -117,6 +119,48 @@ namespace ADUser.Classes
             {
                 logger._elogger(ex);
             }
+        }
+
+        public static void SearchforDLL()
+        {
+            string enviroment = Environment.CurrentDirectory;
+            string Filename = @"\MySql.Data.dll";
+
+            string dll = enviroment + Filename;
+            variablen.dll = dll;
+
+            Console.WriteLine(dll);
+
+            if ( File.Exists (dll))
+            {
+                logger._ilogger("MySqlData.dll gefunden!");
+                variablen.found = true;
+            }
+            else
+            {
+                logger._wlogger("MySqlData.dll wurde nicht gefunden!");
+
+                if (!File.Exists(enviroment + @"\MySqlData.dll"))
+                {
+                    if (Directory.Exists(@"C:\Program Files (x86)\MySQL"))
+                    {
+                        if (Directory.Exists("MySQL Connector Net 6.9.8"))
+                        {
+                            File.Copy(@"C:\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll", enviroment + @"\MySql.Data.dll");
+                        }
+                    }
+                    else
+                    {
+                        Connector();
+                    }
+                }
+
+             
+
+
+                
+            }
+
         }
     }
 }

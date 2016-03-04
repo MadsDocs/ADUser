@@ -110,20 +110,21 @@ namespace ADUser.Classes
 
         public static void ShowHelp()
         {
-            Console.WriteLine("Benutzbare Befehle: ");
+            Console.WriteLine("Willkommen auf den Hilfeseiten!");
+            Console.WriteLine("Folgende Befehle sind benutzbar:");
+            Console.WriteLine("\r\n");
             Console.WriteLine("add -- Füllt die Datenbank mit Daten");
-            Console.WriteLine("cls -- Löscht den Konsolen Inhalt");
-            Console.WriteLine("Display -- Zeigt alle User in einer Domäne an");
-            Console.WriteLine("env -- Zeigt das Aktuelle Working Directory des Programms an!");
             Console.WriteLine("truncate -- Löscht die Daten aus der Tabelle tracking");
             Console.WriteLine("select -- Zeigt den Inhalt der Tablle tracking");
-            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine("logs --show  --Zeigt den Inhalt der Datei 'status.log' an");
+            Console.WriteLine("cls -- Löscht den Konsolen Inhalt");
+            Console.WriteLine("display -- Zeigt alle User in einer Domäne an");
+            Console.WriteLine("env -- Zeigt das Aktuelle Working Directory des Programms an!");
             Console.WriteLine("ver -- Zeigt die Aktuelle Programmversion an");
             Console.WriteLine("stat -- Zeit den Aktuellen Programm Status an");
             Console.WriteLine("check -- Checkt die Tabelle tracking");
-            
-            
             Console.WriteLine("exit -- Beendet das Programm");
+
         }
     }
 }
