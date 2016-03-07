@@ -47,6 +47,7 @@ namespace ADUser.Classes
                     Deployment.ChecIfMySqlConnector();
 
                     SearchforDLL();
+                    SearchForConfig();
 
                     if (variablen.found == false)
                     {
@@ -81,8 +82,6 @@ namespace ADUser.Classes
             {
                 logger._elogger(ex);
             }
-
-           
         }
 
         public static void Connector()
@@ -110,10 +109,6 @@ namespace ADUser.Classes
                         proc.Start();
                         proc.WaitForExit();
                 }
-
-              
-
-
             }
             catch (Exception ex)
             {
@@ -123,10 +118,10 @@ namespace ADUser.Classes
 
         public static void SearchforDLL()
         {
-            string enviroment = Environment.CurrentDirectory;
+            string env = variablen.enviroment;
             string Filename = @"\MySql.Data.dll";
 
-            string dll = enviroment + Filename;
+            string dll = env + Filename;
             variablen.dll = dll;
 
             Console.WriteLine(dll);
@@ -134,20 +129,19 @@ namespace ADUser.Classes
             if ( File.Exists (dll))
             {
                 logger._ilogger("MySqlData.dll gefunden!");
-                variablen.found = true;
+                variablen.dll_found = true;
             }
             else
             {
-                logger._wlogger("MySqlData.dll wurde nicht gefunden!");
-
-                if (!File.Exists(enviroment + @"\MySqlData.dll"))
+                if (!File.Exists(env + @"\MySqlData.dll"))
                 {
                     if (Directory.Exists(@"C:\Program Files (x86)\MySQL"))
                     {
                         if (Directory.Exists("MySQL Connector Net 6.9.8"))
                         {
-                            File.Copy(@"C:\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll", enviroment + @"\MySql.Data.dll");
+                            File.Copy(@"C:\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll", env + @"\MySql.Data.dll");
                         }
+                        logger._wlogger("MySqlData.dll wurde nicht gefunden!");
                     }
                     else
                     {
@@ -155,12 +149,32 @@ namespace ADUser.Classes
                     }
                 }
 
-             
-
-
-                
             }
 
+        }
+
+        public static void SearchForConfig()
+        {
+            string env = variablen.enviroment;
+            string config = @"\App.config";
+
+            string pfad = env + config;
+
+            Console.WriteLine(pfad);
+
+            if( File.Exists(pfad))
+            {
+                logger._ilogger("App.config wurde gefunden, Programm wird ordnungsgemäß funktionieren!");
+                logger._wlogger("Konnte App.config nicht finden, aborting...");
+                Console.WriteLine("Konnte App.config nicht finden");
+                Console.WriteLine("Programm wird nun beendet!");
+                Console.ReadLine();
+                Environment.Exit(-1);
+            }
+            else
+            {
+
+            }
         }
     }
 }

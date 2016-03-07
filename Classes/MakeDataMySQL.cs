@@ -16,7 +16,7 @@ namespace ADUser.Classes
     {
         public static void InsertData (string sAMAccount, DateTime lastLogonTimeStampt, int logonCount)
         {
-            try
+          try
             {
 
                 bool valid = variablen.isValid;
@@ -64,6 +64,7 @@ namespace ADUser.Classes
             {
                 logger._elogger(ex);
             }
+            
             
         }
     }

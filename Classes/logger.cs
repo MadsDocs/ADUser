@@ -94,6 +94,8 @@ namespace ADUser.Classes
                 {
                     Console.WriteLine(line);
                 }
+                _rreader.Close();
+
 
                 Console.ReadLine();
 

@@ -27,17 +27,6 @@ namespace ADUser.Classes
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string setting = config.AppSettings.Settings["connectionstring"].Value;
-
-            if (setting == string.Empty)
-            {
-                Console.WriteLine("Key [" + key + "] wurde nicht gefunden!");
-                Console.ReadLine();
-
-                logger._ilogger("Key [" + key + "] wurde nicht gefunden!");
-                Environment.Exit(-1);
-            }
-
-
             return config.AppSettings.Settings["connectionstring"].Value;
         }
 
@@ -79,7 +68,7 @@ namespace ADUser.Classes
                 PingOptions options = new PingOptions(128, true);
                 string data = "aaaaaaaaaaaaaaaaaaa";
                 byte[] buffer = Encoding.ASCII.GetBytes(data);
-                PingReply reply = pingsender.Send(Classes.variablen.domain);
+                /*PingReply reply = pingsender.Send(Classes.variablen.domain);
 
                 if (reply.Status == IPStatus.Success)
                 {
@@ -92,7 +81,7 @@ namespace ADUser.Classes
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Domain wurde nicht gefunden!");
                     Console.ForegroundColor = ConsoleColor.Gray;
-                }
+                }*/
             }
             catch (Exception ex)
             {

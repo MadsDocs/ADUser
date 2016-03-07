@@ -33,6 +33,8 @@ namespace ADUser.Classes
         public static bool can_start = true;
         public static DateTime nuller = new DateTime(1970, 1, 1);
         public static bool found = false;
+        public static bool dll_found = false;
+        public static string enviroment = Environment.CurrentDirectory;
 
         public const string message = "Soll versucht werden den MySQL Connector neu zu installieren?";
         public const string caption = "MySQL Connector neu installieren?";
@@ -45,7 +47,20 @@ namespace ADUser.Classes
         public static bool isValid = false;
         
 
-       
+       public static void showallvariables()
+        {
+            Console.Clear();
+            Console.WriteLine("APPDATA: " + appdata);
+            Console.WriteLine("Enviroment: " + enviroment);
+            Console.WriteLine("Version: " + version);
+            Console.WriteLine("Connectionstring: " + connectionstring);
+            Console.WriteLine("MSSQLConnectionstring: " + mssconnectionstring);
+            Console.WriteLine("Branch: " + branch);
+            Console.WriteLine("MySQLConnector: " + is_connector);
+            Console.WriteLine("Programm richtig installiert? " + can_start);
+            Console.WriteLine("Nuller: " + nuller);
+            Console.WriteLine("Domain: " + misc.getDomainSetting("domain"));
+        }
 
 
     }
