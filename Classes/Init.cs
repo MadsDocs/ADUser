@@ -33,8 +33,6 @@ namespace ADUser.Classes
                                 -- Updates
                                     --Changelogs
 
-                Desweiteren prüft die Methode ob der MySQL Connector installiert ist und
-                wenn dieser nicht installiert ist, wird dieser installiert. 
 
         */
         public static void init()
@@ -46,6 +44,27 @@ namespace ADUser.Classes
                     logger._ilogger("Ordner unter %APPDATA% ist vorhanden");
                     variablen.can_start = true;
                     logger._ilogger("Neuer ADUser Start Status ist: " + variablen.can_start);
+                    Deployment.ChecIfMySqlConnector();
+
+                    SearchforDLL();
+                    SearchForConfig();
+
+                    if (variablen.found == false)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Keinen MySQL Connector gefunden, bitte Install ausführen damit die MySQL Funktionen des Programms benutzt werden können!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                    else
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("MySQL Connector / DLL Check = Gefunden" );
+                        Console.ForegroundColor = ConsoleColor.Gray;
+
+                        logger._ilogger("MySQL Connector wurde installiert");
+                    }
+
                 }
                 else
                 {
@@ -54,71 +73,108 @@ namespace ADUser.Classes
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Temp");
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Updates");
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Updates\Changelogs");
+                    Directory.CreateDirectory(variablen.appdata + @"\UserData\Installation");
 
                     logger._ilogger("Directory wurde erfolgreich erstellt..");
-                    logger._ilogger("Versuche nun den MySQL Connector zu installieren");
-
-                    WebClient mysql = new WebClient();
-                    mysql.DownloadFile(@"\\srv00\Deployment\MySQL Connector\mysql-connector-net-6.9.8.msi", variablen.appdata + @"\UserData\Temp\mysql-connector-net-6.9.8.msi");
-                    Process.Start(variablen.appdata + @"\UserData\Temp\mysql-connector-net-6.9.8.msi", "/quiet");
-
-                    if(Directory.Exists(@"C:\Program Files (x86)\MySQL"))
-                    {
-                        Console.WriteLine("MySQL Connector wurde installiert... Das Programm kann nun verwenden werden!");
-                        logger._ilogger("MySQL Connector wurde installiert... Überprüfung des Ordner war positiv (Untersuchter Ordner: C:\\Program Files (x86)\\MySQL");
-                        variablen.can_start = true;
-                        logger._ilogger("Neuer ADUser Start Status ist: " + variablen.can_start);
-
-                    }
-                    else
-                    {
-                        
-
-                        var result = MessageBox.Show(variablen.message, variablen.caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result == DialogResult.Yes)
-                        {
-                            Console.WriteLine("Wir versuchen noch mal eine Automatische Installation.");
-                            WebClient connector = new WebClient();
-                            connector.DownloadFile(@"\\srv00\Deployment\MySQL Connector\mysql-connector-net-6.9.8.msi", variablen.appdata + @"\UserData\Temp\mysql-connector-net-6.9.8.msi");
-                            Process.Start(variablen.appdata + @"\UserData\Temp\mysql-connector-net-6.9.8.msi", "/quiet");
-
-                            if(!Directory.Exists(@"C:\Program Files (x86)\MySQL"))
-                            {
-                                MessageBox.Show(variablen.error_message, variablen.error_caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                variablen.can_start = false;
-                                logger._sLogger(variablen.can_start);
-                                Environment.Exit(-1);
-
-                            }
-                            else
-                            {
-                                Console.WriteLine("MySQL Connector wurde installiert, das Programm kann nun verwendet werden!");
-                                variablen.can_start = true;
-                                logger._sLogger(variablen.can_start);
-                            }
-
-
-
-                        }
-                        else
-                        {
-                            MessageBox.Show(variablen.error_message, variablen.error_caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger._wlogger("MySQL Connector konnte nicht installiert werden! Bitte den MySQL Connector manuell installieren!");
-                            variablen.can_start = false;
-                            logger._sLogger(variablen.can_start);
-                        }
-
-                        
-                    }
-
                 }
             }
             catch (Exception ex)
             {
                 logger._elogger(ex);
             }
+        }
 
-           
+        public static void Connector()
+        {
+            try
+            {
+                if (variablen.found)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("MySQL Connector wurde gefunden!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                else
+                {
+                    WebClient client = new WebClient();
+                    client.DownloadFile("http://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-6.9.8.msi", variablen.appdata + @"\UserData\Installation\mysql-connector.msi");
+
+                        Process proc = new Process();
+                        proc.StartInfo.WorkingDirectory = variablen.appdata + @"\UserData\Installation";
+                        proc.StartInfo.FileName = "msiexec";
+                        proc.StartInfo.Arguments = string.Format(@"/quiet");
+                        proc.StartInfo.Arguments = string.Format(@"/package  " + variablen.appdata + @"\UserData\Installation\mysql-connector.msi");
+                        proc.StartInfo.UseShellExecute = false;
+                        proc.StartInfo.CreateNoWindow = false;
+                        proc.Start();
+                        proc.WaitForExit();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger._elogger(ex);
+            }
+        }
+
+        public static void SearchforDLL()
+        {
+            string env = variablen.enviroment;
+            string Filename = @"\MySql.Data.dll";
+
+            string dll = env + Filename;
+            variablen.dll = dll;
+
+            Console.WriteLine(dll);
+
+            if ( File.Exists (dll))
+            {
+                logger._ilogger("MySqlData.dll gefunden!");
+                variablen.dll_found = true;
+            }
+            else
+            {
+                if (!File.Exists(env + @"\MySqlData.dll"))
+                {
+                    if (Directory.Exists(@"C:\Program Files (x86)\MySQL"))
+                    {
+                        if (Directory.Exists("MySQL Connector Net 6.9.8"))
+                        {
+                            File.Copy(@"C:\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll", env + @"\MySql.Data.dll");
+                        }
+                        logger._wlogger("MySqlData.dll wurde nicht gefunden!");
+                    }
+                    else
+                    {
+                        Connector();
+                    }
+                }
+
+            }
+
+        }
+
+        public static void SearchForConfig()
+        {
+            string env = variablen.enviroment;
+            string config = @"\App.config";
+
+            string pfad = env + config;
+
+            Console.WriteLine(pfad);
+
+            if( File.Exists(pfad))
+            {
+                logger._ilogger("App.config wurde gefunden, Programm wird ordnungsgemäß funktionieren!");
+                logger._wlogger("Konnte App.config nicht finden, aborting...");
+                Console.WriteLine("Konnte App.config nicht finden");
+                Console.WriteLine("Programm wird nun beendet!");
+                Console.ReadLine();
+                Environment.Exit(-1);
+            }
+            else
+            {
+
+            }
         }
     }
 }

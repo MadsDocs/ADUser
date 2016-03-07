@@ -13,12 +13,8 @@ namespace ADUser.Classes
         public static void TRUNCATE ()
         {
             bool valid = variablen.isValid;
-
-
             try
             {
-                if(valid)
-                {
                     Console.Clear();
                     MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
                     MySqlCommand cmd = con.CreateCommand();
@@ -29,24 +25,16 @@ namespace ADUser.Classes
                     cmd.ExecuteNonQuery();
                     con.Close();
 
-                    Console.WriteLine("TRUNCATE Befehl wurde erfolgreich ausgeführt! Starten Sie das Programm neu und geben Sie add ein um die Datenbank wieder zu füllen!");
+                    Console.WriteLine("TRUNCATE Befehl wurde erfolgreich ausgeführt! Benutzen Sie den add Befehl um die Tabelle wieder zu füllen!");
                     logger._ilogger("TRUNCATE Befehl wurde erfolgreich ausgeführt.");
-
-                }
-                else
-                {
-                    Console.WriteLine("Bitte den Connectionstring umändern!");
-                }
-
-
-
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine("TRUNCATE Befehl ist fehlgeschlagen...");
                 Console.WriteLine(ex.Message);
                 logger._elogger(ex);
+
+                Console.ReadLine();
             }
 
 
@@ -54,10 +42,7 @@ namespace ADUser.Classes
 
         public static void SELECT()
         {
-
-            bool valid = variablen.isValid;
-
-            if (valid)
+            try
             {
                 Console.Clear();
                 MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
@@ -100,14 +85,15 @@ namespace ADUser.Classes
                 }
 
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Bitte den Connectionstring umändern!");
+                Classes.logger._elogger(ex);
+                Console.WriteLine("Fehler beim Anzeigen der Daten!");
+                Console.WriteLine(ex.Message);
+
+                Console.ReadLine();
             }
-
-
-
-
+               
         }
 
         public static void CHECK()
@@ -134,7 +120,7 @@ namespace ADUser.Classes
                 Console.WriteLine("Tabellen Überprüfung fehlgeschlagen!");
                 logger._elogger(ex);
             }
-           
+
         }
     }
 }

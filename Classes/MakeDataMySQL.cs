@@ -16,7 +16,7 @@ namespace ADUser.Classes
     {
         public static void InsertData (string sAMAccount, DateTime lastLogonTimeStampt, int logonCount)
         {
-            try
+          try
             {
 
                 bool valid = variablen.isValid;
@@ -24,9 +24,6 @@ namespace ADUser.Classes
 
                 if (lastLogonTimeStampt == variablen.nuller)
                 {
-
-                    if(valid)
-                    {
 
                         MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
                         MySqlCommand cmd = con.CreateCommand();
@@ -40,14 +37,7 @@ namespace ADUser.Classes
                         cmd.ExecuteNonQuery();
                         logger._ilogger("MySQL Command ausgeführt...");
                         con.Close();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Bitte den Connectionstring umändern!");
-                        Console.ReadLine();
-                    }
-
-
+                 
                 }
                 else
                 {
@@ -74,6 +64,7 @@ namespace ADUser.Classes
             {
                 logger._elogger(ex);
             }
+            
             
         }
     }

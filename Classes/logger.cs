@@ -16,10 +16,11 @@ namespace ADUser.Classes
         {
             try
             {
-                StreamWriter _ewriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\err.log");
-                _ewriter.WriteLine(DateTime.Now + "|" + exe.Message);
-                _ewriter.WriteLine(DateTime.Now + "|" + exe.StackTrace);
-                _ewriter.WriteLine(DateTime.Now + "|" + exe.InnerException);
+                StreamWriter _ewriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\status.log");
+                _ewriter.WriteLine(DateTime.Now + " | " + Classes.variablen.version + " | " + Classes.variablen.branch);
+                _ewriter.WriteLine(DateTime.Now + " | " + exe.Message);
+                _ewriter.WriteLine(DateTime.Now + " | " + exe.StackTrace);
+                _ewriter.WriteLine(DateTime.Now + " | " + exe.InnerException);
                 _ewriter.Flush();
                 _ewriter.Close();
 
@@ -37,9 +38,9 @@ namespace ADUser.Classes
         {
             try
             {
-                StreamWriter _iwriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\info.log");
-                _iwriter.WriteLine("ADUser Version: " + variablen.version);
-                _iwriter.WriteLine(DateTime.Now + "|" + message);
+                StreamWriter _iwriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\status.log");
+                _iwriter.WriteLine(DateTime.Now + " | " + Classes.variablen.version + " | " + Classes.variablen.branch);
+                _iwriter.WriteLine(DateTime.Now + " | " + message);
                 _iwriter.Flush();
                 _iwriter.Close();
             }
@@ -54,8 +55,9 @@ namespace ADUser.Classes
         {
             try
             {
-                StreamWriter _wwriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\warnings.log");
-                _wwriter.WriteLine(DateTime.Now + "|" + message);
+                StreamWriter _wwriter = new StreamWriter(variablen.appdata + @"\UserData\Logs\status.log");
+                _wwriter.WriteLine(DateTime.Now + " | " + Classes.variablen.version + " | " + Classes.variablen.branch);
+                _wwriter.WriteLine(DateTime.Now + " | " + message);
                 _wwriter.Flush();
                 _wwriter.Close();
 
@@ -73,6 +75,31 @@ namespace ADUser.Classes
             _swriter.WriteLine(status);
             _swriter.Close();
             _swriter.Flush();
+        }
+
+        public static void readLog()
+        {
+            if ( !Directory.Exists (variablen.appdata + @"\UserData\Logs\"))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Log Ordner nicht gefunden!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else
+            {
+                StreamReader _rreader = new StreamReader(variablen.appdata + @"\UserData\Logs\status.log");
+                string line = "";
+
+                while ((line = _rreader.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+                _rreader.Close();
+
+
+                Console.ReadLine();
+
+            }
         }
     }
 }

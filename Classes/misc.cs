@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.DirectoryServices.ActiveDirectory;
+using System.Net.NetworkInformation;
 
 namespace ADUser.Classes
 {
@@ -25,17 +27,6 @@ namespace ADUser.Classes
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string setting = config.AppSettings.Settings["connectionstring"].Value;
-
-            if (setting == string.Empty)
-            {
-                Console.WriteLine("Key [" + key + "] wurde nicht gefunden!");
-                Console.ReadLine();
-
-                logger._ilogger("Key [" + key + "] wurde nicht gefunden!");
-                Environment.Exit(-1);
-            }
-
-
             return config.AppSettings.Settings["connectionstring"].Value;
         }
 
@@ -64,15 +55,65 @@ namespace ADUser.Classes
                 Console.WriteLine("Bitte Connectionstring ändern!");
                 return variablen.isValid;
             }
-            else if (connectionstring == "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;")
-            {
-                Console.WriteLine("Bitte den Connectionstring umändern!");
-                return variablen.isValid;
-
-            }
 
             variablen.isValid = true;
             return variablen.isValid;
+        }
+
+        public static void isValidDomain ()
+        {
+            try
+            {
+                Ping pingsender = new Ping();
+                PingOptions options = new PingOptions(128, true);
+                string data = "aaaaaaaaaaaaaaaaaaa";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+                /*PingReply reply = pingsender.Send(Classes.variablen.domain);
+
+                if (reply.Status == IPStatus.Success)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Domain wurde gefunden!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                else if (reply.Status == IPStatus.TimedOut)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Domain wurde nicht gefunden!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }*/
+            }
+            catch (Exception ex)
+            {
+                Classes.logger._elogger(ex);
+            }
+          
+            
+        }
+
+        public static void ShowDomain()
+        {
+            Console.WriteLine(Environment.UserDomainName);
+            Console.ReadLine();
+        }
+
+        public static void ShowHelp()
+        {
+            Console.WriteLine("Willkommen auf den Hilfeseiten!");
+            Console.WriteLine("Folgende Befehle sind benutzbar:");
+            Console.WriteLine("\r\n");
+            Console.WriteLine("add -- Füllt die Datenbank mit Daten");
+            Console.WriteLine("truncate -- Löscht die Daten aus der Tabelle tracking");
+            Console.WriteLine("select -- Zeigt den Inhalt der Tablle tracking");
+            Console.WriteLine("logs --show  --Zeigt den Inhalt der Datei 'status.log' an");
+            Console.WriteLine("cls -- Löscht den Konsolen Inhalt");
+            Console.WriteLine("display -- Zeigt alle User in einer Domäne an");
+            Console.WriteLine("env -- Zeigt das Aktuelle Working Directory des Programms an!");
+            Console.WriteLine("ver -- Zeigt die Aktuelle Programmversion an");
+            Console.WriteLine("stat -- Zeit den Aktuellen Programm Status an");
+            Console.WriteLine("check -- Checkt die Tabelle tracking");
+            Console.WriteLine("exit -- Beendet das Programm");
+
         }
     }
 }

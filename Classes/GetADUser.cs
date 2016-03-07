@@ -47,7 +47,12 @@ namespace ADUser.Classes
             }
             catch (Exception ex)
             {
+                Console.Clear();
                 logger._elogger(ex);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Add Befehl fehlgeschlagen, bitte überprüfen Sie ob der Computer in der gleichen Domain ist wie die Domain die Sie abfragen wollen!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
             }
         }
 
@@ -66,25 +71,40 @@ namespace ADUser.Classes
                 }
                 else
                 {
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, variablen.domain);
-                    PrincipalSearcher us = new PrincipalSearcher(new UserPrincipal(pc));
-                    PrincipalSearchResult<Principal> psr = us.FindAll();
 
-                    Console.WriteLine("User werden nun angezeigt!");
-                    foreach (UserPrincipal up2 in psr)
+                    string udomain = Environment.UserDomainName;
+
+                    if (variablen.domain == string.Empty)
                     {
-                        eintraege++;
-                        DateTime lastlog = up2.LastLogon.GetValueOrDefault(variablen.nuller);
-                        string ausgabe = String.Format("\r\nsAMAccount: {0}, \r\n LastLog: {1}", up2.SamAccountName, lastlog);
-                        Console.WriteLine(ausgabe);
-
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Keine Domain angegeben!");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
-                    Console.WriteLine("Auslesen fertig! Angezeigte User: " + eintraege);
+                    else
+                    {
+                        PrincipalContext pc = new PrincipalContext(ContextType.Domain, variablen.domain);
+                        PrincipalSearcher us = new PrincipalSearcher(new UserPrincipal(pc));
+                        PrincipalSearchResult<Principal> psr = us.FindAll();
+
+                        Console.WriteLine("User werden nun angezeigt!");
+                        foreach (UserPrincipal up2 in psr)
+                        {
+                            eintraege++;
+                            DateTime lastlog = up2.LastLogon.GetValueOrDefault(variablen.nuller);
+                            string ausgabe = String.Format("\r\nsAMAccount: {0}, \r\n LastLog: {1}", up2.SamAccountName, lastlog);
+                            Console.WriteLine(ausgabe);
+
+                        }
+                        Console.WriteLine("Auslesen fertig! Angezeigte User: " + eintraege);
+                    }                                  
                 }
 
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Fehler bei Domänenausgabe... ");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 logger._elogger(ex);
             }
         }
