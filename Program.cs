@@ -11,18 +11,21 @@ namespace ADUser
     {
         static void Main(string[] args)
         {
+            Classes.Init.init();
+            Programm();
+        }
 
+        public static void Programm()
+        {
             try
             {
                 Console.Title = Classes.variablen.version;
                 Console.WriteLine("Hilfe? Einfach mal die Enter Taste drücken :)");
-                Classes.Init.init();
-
 
                 do
-                {
+                {                    
                     string befehl;
-                    
+
                     befehl = Console.ReadLine();
 
                     switch (befehl)
@@ -49,8 +52,11 @@ namespace ADUser
                             Console.WriteLine("ADUser Version: " + Classes.variablen.version);
                             Console.WriteLine("Branch: " + Classes.variablen.branch);
                             break;
+                        case "var":
+                            Classes.variablen.showallvariables();
+                            break;
                         case "env":
-                            Console.WriteLine(Classes.variablen.appdata);
+                            Console.WriteLine(Environment.CurrentDirectory);
                             break;
                         case "stat":
                             Classes.misc.ShowStatus(Classes.variablen.can_start);
@@ -73,6 +79,9 @@ namespace ADUser
                         case "Install":
                             Classes.Init.Connector();
                             break;
+                        case "logs --show":
+                            Classes.logger.readLog();
+                            break;
                         default:
                             Classes.misc.ShowHelp();
                             break;
@@ -93,7 +102,6 @@ namespace ADUser
 
                 Console.ReadLine();
             }
-            
         }
     }
 }
