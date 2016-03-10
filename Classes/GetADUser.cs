@@ -48,7 +48,52 @@ namespace ADUser.Classes
             catch (Exception ex)
             {
                 Console.Clear();
-                logger._elogger(ex);
+                logger._eLogger(ex);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Add Befehl fehlgeschlagen, bitte überprüfen Sie ob der Computer in der gleichen Domain ist wie die Domain die Sie abfragen wollen!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+            }
+        }
+
+        public static void DisplayADUserMSSQL()
+        {
+            try
+            {
+                int eintraege = 0;
+
+                if (variablen.domain == "Place your Domain here!")
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("Bitte Suchdomain ändern!");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, variablen.domain);
+                    PrincipalSearcher us = new PrincipalSearcher(new UserPrincipal(pc));
+                    PrincipalSearchResult<Principal> psr = us.FindAll();
+
+
+
+                    Console.WriteLine("Tabelle wird nun gefüllt!");
+                    foreach (UserPrincipal up in psr)
+                    {
+                        eintraege++;
+                        DateTime lastLog = up.LastLogon.GetValueOrDefault(variablen.nuller);
+                        Console.WriteLine("Derzeitiger Eingefügter Eintrag: " + eintraege + "( " + up.SamAccountName + " )");
+                        MakeDataMySQL.InserDataMSSQL(up.SamAccountName, lastLog, 600);
+                    }
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                logger._eLogger(ex);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Add Befehl fehlgeschlagen, bitte überprüfen Sie ob der Computer in der gleichen Domain ist wie die Domain die Sie abfragen wollen!");
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -99,15 +144,18 @@ namespace ADUser.Classes
                     }                                  
                 }
 
+                logger._tlogger("Test Message");
+
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Fehler bei Domänenausgabe... ");
+                Console.WriteLine("Fehler bei Domänenausgabe... ( " + ex.Message + " ) " );
                 Console.ForegroundColor = ConsoleColor.Gray;
-                logger._elogger(ex);
+                logger._eLogger(ex);
             }
         }
+        
 
     }
 }

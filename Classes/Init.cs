@@ -41,13 +41,30 @@ namespace ADUser.Classes
             {
                 if (Directory.Exists(variablen.appdata + @"\UserData\"))
                 {
-                    logger._ilogger("Ordner unter %APPDATA% ist vorhanden");
+                    logger._logger("Ordner unter %APPDATA% ist vorhanden");
                     variablen.can_start = true;
-                    logger._ilogger("Neuer ADUser Start Status ist: " + variablen.can_start);
+                    logger._logger("Neuer ADUser Start Status ist: " + variablen.can_start);
                     Deployment.ChecIfMySqlConnector();
+                    Console.WriteLine(Environment.UserDomainName);
 
                     SearchforDLL();
                     SearchForConfig();
+
+                    bool isDomain = isDomainPC(variablen.domain);
+
+                    if(isDomain)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("PC ist DomänenPC");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("PC ist kein DomänenPC");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+
 
                     if (variablen.found == false)
                     {
@@ -62,7 +79,7 @@ namespace ADUser.Classes
                         Console.WriteLine("MySQL Connector / DLL Check = Gefunden" );
                         Console.ForegroundColor = ConsoleColor.Gray;
 
-                        logger._ilogger("MySQL Connector wurde installiert");
+                        logger._logger("MySQL Connector wurde installiert");
                     }
 
                 }
@@ -75,12 +92,12 @@ namespace ADUser.Classes
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Updates\Changelogs");
                     Directory.CreateDirectory(variablen.appdata + @"\UserData\Installation");
 
-                    logger._ilogger("Directory wurde erfolgreich erstellt..");
+                    logger._logger("Directory wurde erfolgreich erstellt..");
                 }
             }
             catch (Exception ex)
             {
-                logger._elogger(ex);
+                logger._eLogger(ex);
             }
         }
 
@@ -112,7 +129,7 @@ namespace ADUser.Classes
             }
             catch (Exception ex)
             {
-                logger._elogger(ex);
+                logger._eLogger(ex);
             }
         }
 
@@ -128,7 +145,7 @@ namespace ADUser.Classes
 
             if ( File.Exists (dll))
             {
-                logger._ilogger("MySqlData.dll gefunden!");
+                logger._logger("MySqlData.dll gefunden!");
                 variablen.dll_found = true;
             }
             else
@@ -141,7 +158,7 @@ namespace ADUser.Classes
                         {
                             File.Copy(@"C:\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll", env + @"\MySql.Data.dll");
                         }
-                        logger._wlogger("MySqlData.dll wurde nicht gefunden!");
+                        logger._logger("MySqlData.dll wurde nicht gefunden!");
                     }
                     else
                     {
@@ -164,16 +181,34 @@ namespace ADUser.Classes
 
             if( File.Exists(pfad))
             {
-                logger._ilogger("App.config wurde gefunden, Programm wird ordnungsgemäß funktionieren!");
-                logger._wlogger("Konnte App.config nicht finden, aborting...");
-                Console.WriteLine("Konnte App.config nicht finden");
-                Console.WriteLine("Programm wird nun beendet!");
-                Console.ReadLine();
-                Environment.Exit(-1);
+                ///TODO: Bessere Abfrage reinprogrammiern
+                // Loggen das die app.config existiert
+
             }
             else
             {
+                // Loggen das die app.config nicht existiert...
+            }
+        }
 
+        public static bool isDomainPC(string domain)
+        {
+            //Diese Funktion überprüft ob der PC zu einer Domäne gehört oder nicht
+            //Siehe auch Tasklist Item 11
+
+            string computer = Environment.UserDomainName.ToLower();
+
+            
+
+            if (computer.Contains(variablen.domain))
+            {
+                //Dann befinden wir uns in der gegebenen Domäne...
+                return true;
+            }
+            else
+            {
+                //Tja, dann halt nicht
+                return false;
             }
         }
     }

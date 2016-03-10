@@ -26,8 +26,16 @@ namespace ADUser.Classes
         public static string getAppSetting(string key)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string setting = config.AppSettings.Settings["connectionstring"].Value;
+            //string setting = config.AppSettings.Settings["connectionstring"].Value;
             return config.AppSettings.Settings["connectionstring"].Value;
+        }
+
+        public static string getMSAPPSetting (string key)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string setting = config.AppSettings.Settings["mssconnectionstring"].Value;
+
+            return setting;
         }
 
         public static string getDomainSetting (string key)
@@ -40,7 +48,7 @@ namespace ADUser.Classes
                 Console.WriteLine("Key [" + key + "] wurde nicht gefunden!");
                 Console.ReadLine();
 
-                logger._ilogger("Key [" + key + "] wurde nicht gefunden!");
+                logger._logger("Key [" + key + "] wurde nicht gefunden!");
                 Environment.Exit(-1);
             }
 
@@ -68,7 +76,7 @@ namespace ADUser.Classes
                 PingOptions options = new PingOptions(128, true);
                 string data = "aaaaaaaaaaaaaaaaaaa";
                 byte[] buffer = Encoding.ASCII.GetBytes(data);
-                /*PingReply reply = pingsender.Send(Classes.variablen.domain);
+                PingReply reply = pingsender.Send(Classes.variablen.domain);
 
                 if (reply.Status == IPStatus.Success)
                 {
@@ -81,11 +89,11 @@ namespace ADUser.Classes
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Domain wurde nicht gefunden!");
                     Console.ForegroundColor = ConsoleColor.Gray;
-                }*/
+                }
             }
             catch (Exception ex)
             {
-                Classes.logger._elogger(ex);
+                Classes.logger._eLogger(ex);
             }
           
             

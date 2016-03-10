@@ -14,9 +14,9 @@ namespace ADUser.Classes
 {
     class MakeDataMySQL
     {
-        public static void InsertData (string sAMAccount, DateTime lastLogonTimeStampt, int logonCount)
+        public static void InsertData(string sAMAccount, DateTime lastLogonTimeStampt, int logonCount)
         {
-          try
+            try
             {
 
                 bool valid = variablen.isValid;
@@ -25,19 +25,19 @@ namespace ADUser.Classes
                 if (lastLogonTimeStampt == variablen.nuller)
                 {
 
-                        MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
-                        MySqlCommand cmd = con.CreateCommand();
+                    MySqlConnection con = new MySqlConnection(Classes.variablen.connectionstring);
+                    MySqlCommand cmd = con.CreateCommand();
 
-                        cmd.CommandText = "INSERT INTO tracking VALUES (ID,@sAMAccount, @lastLogonTimeStampt, @logonCount);";
-                        cmd.Parameters.AddWithValue("@sAMAccount", sAMAccount);
-                        cmd.Parameters.AddWithValue("@lastLogonTimeStampt", "Never Logged On");
-                        cmd.Parameters.AddWithValue("@logonCount", logonCount);
+                    cmd.CommandText = "INSERT INTO tracking VALUES (ID,@sAMAccount, @lastLogonTimeStampt, @logonCount);";
+                    cmd.Parameters.AddWithValue("@sAMAccount", sAMAccount);
+                    cmd.Parameters.AddWithValue("@lastLogonTimeStampt", "Never Logged On");
+                    cmd.Parameters.AddWithValue("@logonCount", logonCount);
 
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        logger._ilogger("MySQL Command ausgeführt...");
-                        con.Close();
-                 
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    logger._logger("MySQL Command ausgeführt...");
+                    con.Close();
+
                 }
                 else
                 {
@@ -52,20 +52,77 @@ namespace ADUser.Classes
 
                     con.Open();
                     cmd.ExecuteNonQuery();
-                    logger._ilogger("MySQL Command ausgeführt...");
+                    logger._logger("MySQL Command ausgeführt...");
                     con.Close();
                 }
 
 
-                
-                
+
+
             }
             catch (Exception ex)
             {
-                logger._elogger(ex);
+                logger._eLogger(ex);
             }
-            
-            
+
+
+        }
+
+        public static void InserDataMSSQL(string sAMAccount, DateTime lastLogonTimeStamp, int logoncount)
+        {
+            if (lastLogonTimeStamp == variablen.nuller)
+            {
+
+                try
+                {
+                    string query = "use UserData; INSERT INTO tracking VALUES (@sAMAccount, @lastLogon, @count);";
+                    SqlConnection con = new SqlConnection(variablen.mssconnectionstring);
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue("@sAMAccount", sAMAccount);
+                    cmd.Parameters.AddWithValue("@lastLogon", lastLogonTimeStamp);
+                    cmd.Parameters.AddWithValue("@count", logoncount);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+
+                    Console.ReadLine();
+                }
+            }
+            else
+            {
+
+                try
+                {
+                    string query = "use UserData; INSERT INTO tracking VALUES (@sAMAccount, @lastLogon, @count);";
+                    SqlConnection con = new SqlConnection(variablen.mssconnectionstring);
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue("@sAMAccount", sAMAccount);
+                    cmd.Parameters.AddWithValue("@lastLogon", lastLogonTimeStamp);
+                    cmd.Parameters.AddWithValue("@count", logoncount);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Bitte den Connectionstring umändern!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                    logger._logger("Connectionstring ist null, beende SUB Programm InsertDataMSSQL!");
+                }
+            }
         }
     }
 }
+                
+           

@@ -27,7 +27,7 @@ namespace ADUser.Classes
         public static string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         public static string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         public static string connectionstring = Classes.misc.getAppSetting("connectionstring");
-        public static string mssconnectionstring = Classes.misc.getAppSetting("msconnectionstring");
+        public static string mssconnectionstring = Classes.misc.getMSAPPSetting("mssconnectionstring");
         public static string branch = "Development";
         public static bool is_connector = false;
         public static bool can_start = true;

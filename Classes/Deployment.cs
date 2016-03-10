@@ -45,7 +45,7 @@ namespace ADUser.Classes
             }
             catch (Exception ex)
             {
-                Classes.logger._elogger(ex);
+                Classes.logger._eLogger(ex);
                 Console.WriteLine("Fehler bei Installation des MySQL Connectors... Aborting");
                 Console.ReadLine();
                 Environment.Exit(-1);
